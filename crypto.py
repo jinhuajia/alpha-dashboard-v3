@@ -1,85 +1,112 @@
 import streamlit as st
 import pandas as pd
 
-# 页面基础配置
 st.set_page_config(
-    page_title="Alpha123 极速版",
+    page_title="Alpha123 像素级重制版",
     page_icon="⚡",
     layout="wide"
 )
 
-# 注入打磨后的像素级 CSS
+# 注入严谨打磨后的 CSS
 st.markdown("""
 <style>
-    /* 强制隐藏 Streamlit 所有的默认边距和头部 */
+    /* 1. 强制隐藏默认组件，提升纯净度 */
     [data-testid="stHeader"], [data-testid="stToolbar"] {display: none !important;}
-    .main .block-container {padding: 1rem 2rem !important; max-width: 900px !important; margin: 0 auto;}
-    
-    .stApp { background-color: #1a1c23; color: #ffffff; }
-    
-    /* 顶部金色标题 */
-    .main-title {
-        color: #ffcc00;
-        font-size: 26px;
-        font-weight: 800;
-        text-align: center;
-        margin-top: 10px;
+    .main .block-container {
+        padding: 3rem 1rem !important; 
+        max-width: 1000px !important; 
+        margin: 0 auto;
     }
     
-    /* 仿制水平导航栏 */
+    /* 2. 背景与全局字体 */
+    .stApp { background-color: #1a1c23; color: #ffffff; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    
+    /* 3. 顶部金色大标题 - 字体加粗加大 */
+    .main-title {
+        color: #ffcc00;
+        font-size: 32px;
+        font-weight: 900;
+        text-align: center;
+        letter-spacing: 1px;
+        margin-bottom: 8px;
+    }
+    
+    /* 4. 导航栏 - 优化间距与丰满度 */
     .nav-bar {
         display: flex;
         justify-content: center;
-        gap: 30px;
+        gap: 40px;
         color: #9ca3af;
-        font-size: 15px;
-        margin: 15px 0 30px 0;
+        font-size: 16px;
+        margin-bottom: 40px;
         font-weight: 500;
     }
-    .nav-item.active { color: #ffcc00; border-bottom: 2px solid #ffcc00; padding-bottom: 5px; }
+    .nav-item.active { color: #ffcc00; position: relative; font-weight: bold; }
+    .nav-item.active::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: #ffcc00;
+    }
     
-    /* 模块标题与小标签 */
+    /* 5. 板块头部样式 */
     .section-header {
         display: flex;
         align-items: center;
-        margin: 25px 0 15px 0;
+        margin: 30px 0 15px 0;
     }
-    .section-icon { font-size: 22px; margin-right: 10px; }
-    .section-text { font-size: 18px; font-weight: bold; }
+    .section-icon { font-size: 26px; margin-right: 12px; }
+    .section-text { font-size: 22px; font-weight: 800; color: #ffffff; }
     .info-badge {
-        background: #374151;
+        background: #2d303a;
         color: #ffcc00;
-        font-size: 11px;
-        padding: 2px 10px;
+        font-size: 13px;
+        padding: 4px 14px;
         border-radius: 20px;
-        margin-left: 15px;
-        border: 1px solid #4b5563;
+        margin-left: 18px;
+        border: 1px solid #3f4451;
     }
     
-    /* 精修表格排版 */
-    .custom-table { width: 100%; border-collapse: collapse; }
+    /* 6. 表格细节：模仿原版行高与边框 */
+    .custom-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
     .custom-table th {
         color: #6b7280;
         text-align: left;
-        padding: 12px;
+        padding: 15px;
         border-bottom: 2px solid #2d303a;
-        font-size: 13px;
+        font-size: 14px;
+        font-weight: normal;
     }
     .custom-table td {
-        padding: 15px 12px;
+        padding: 20px 15px;
         border-bottom: 1px solid #2d303a;
         vertical-align: middle;
     }
     
-    /* 文字双行显示逻辑 */
-    .cell-main { font-size: 15px; font-weight: 600; color: #ffffff; display: block; }
-    .cell-sub { font-size: 11px; color: #6b7280; display: block; margin-top: 4px; }
-    .price-yellow { color: #ffcc00; font-weight: bold; }
+    /* 7. 双行文字精准比例 */
+    .cell-main { font-size: 17px; font-weight: 700; color: #ffffff; display: block; line-height: 1.4; }
+    .cell-sub { font-size: 13px; color: #8c929e; display: block; margin-top: 6px; }
+    .price-yellow { color: #ffcc00 !important; }
+    
+    /* 8. 推荐工具卡片 - 提升质感 */
+    .tool-card {
+        background: #242731;
+        padding: 22px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border-left: 5px solid #ffcc00;
+        transition: transform 0.2s;
+    }
+    .tool-title { font-size: 16px; font-weight: bold; color: #ffffff; }
+    .tool-desc { font-size: 14px; color: #9ca3af; margin-top: 8px; }
 </style>
 """, unsafe_allow_html=True)
 
 def main():
-    # 顶部标题与导航
+    # 顶部区域
     st.markdown('<div class="main-title">Alpha123空投日历</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="nav-bar">
@@ -90,7 +117,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # 今日空投板块
+    # 今日空投
     st.markdown("""
     <div class="section-header">
         <span class="section-icon">🎁</span>
@@ -99,15 +126,19 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # 构造像素级模拟数据
+    # 调整后的模拟数据
     today_data = {
         "项目": ["""<span class="cell-main">Q 📄</span><span class="cell-sub">Quack AI</span>"""],
         "积分": ["""<span class="cell-main price-yellow">240</span><span class="cell-sub">3.6万份</span>"""],
-        "数量": ["""<span class="cell-main price-yellow">2500</span><span class="cell-sub"><span style="color:#ffcc00;">~ $34.3</span> / $34.4</span>"""],
+        "数量": ["""<span class="cell-main price-yellow">2500</span><span class="cell-sub"><span style="color:#ffcc00;">~ $36.7</span> / $36.7</span>"""],
         "时间": ["""<span class="cell-main">15:00</span><span class="cell-sub">已同步</span>"""]
     }
     df = pd.DataFrame(today_data)
     st.write(df.to_html(escape=False, index=False, classes="custom-table"), unsafe_allow_html=True)
+
+    # 空投预告
+    st.markdown('<div class="section-header"><span class="section-icon">📅</span><span class="section-text">空投预告</span></div>', unsafe_allow_html=True)
+    st.markdown('<div style="background:#242731; padding:40px; border-radius:10px; text-align:center; color:#6b7280; font-size:16px;">暂无数据</div>', unsafe_allow_html=True)
 
     # 推荐工具
     st.markdown('<div class="section-header"><span class="section-icon">⚔️</span><span class="section-text">推荐工具</span></div>', unsafe_allow_html=True)
@@ -120,9 +151,9 @@ def main():
     
     for title, desc in tools:
         st.markdown(f"""
-        <div style="background:#242731; padding:15px; border-radius:8px; margin-bottom:12px; border-left:3px solid #ffcc00;">
-            <div style="font-weight:bold; font-size:14px;">{title}</div>
-            <div style="font-size:12px; color:#6b7280; margin-top:5px;">{desc}</div>
+        <div class="tool-card">
+            <div class="tool-title">{title}</div>
+            <div class="tool-desc">{desc}</div>
         </div>
         """, unsafe_allow_html=True)
 
