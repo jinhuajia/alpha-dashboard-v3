@@ -15,10 +15,12 @@ st.markdown("""
     
    /* 2. 关键修复：增加两侧留白 */
     /* 限制最大宽度为 1100px 并居中，这样在大屏幕两边就会有自然的留白 */
+    /* 2. 关键修复：强制增加两侧留白 */
     .main .block-container {
         padding: 3rem 1.5rem !important; 
         max-width: 1100px !important; 
         margin: 0 auto !important;
+        display: block !important;
     }
     
     /* 3. 背景与全局字体 */
