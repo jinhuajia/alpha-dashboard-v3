@@ -10,98 +10,103 @@ st.set_page_config(
 # 注入严谨打磨后的 CSS
 st.markdown("""
 <style>
-    /* 1. 强制隐藏默认组件，提升纯净度 */
+    /* 1. 强制隐藏默认组件 */
     [data-testid="stHeader"], [data-testid="stToolbar"] {display: none !important;}
+    
+    /* 2. 关键修复：增加两侧留白 */
+    /* 限制最大宽度为 1100px 并居中，这样在大屏幕两边就会有自然的留白 */
     .main .block-container {
-        padding: 3rem 1rem !important; 
-        max-width: 1000px !important; 
-        margin: 0 auto;
+        padding: 3rem 1.5rem !important; 
+        max-width: 1100px !important; 
+        margin: 0 auto !important;
     }
     
-    /* 2. 背景与全局字体 */
-    .stApp { background-color: #1a1c23; color: #ffffff; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+    /* 3. 背景与全局字体 */
+    .stApp { 
+        background-color: #1a1c23; 
+        color: #ffffff; 
+        font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
+    }
     
-    /* 3. 顶部金色大标题 - 字体加粗加大 */
+    /* 4. 顶部金色大标题 - 增加字间距 */
     .main-title {
         color: #ffcc00;
-        font-size: 32px;
+        font-size: 34px;
         font-weight: 900;
         text-align: center;
-        letter-spacing: 1px;
-        margin-bottom: 8px;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
     }
     
-    /* 4. 导航栏 - 优化间距与丰满度 */
+    /* 5. 导航栏 - 模拟原版均匀分布 */
     .nav-bar {
         display: flex;
         justify-content: center;
-        gap: 40px;
+        gap: 50px;
         color: #9ca3af;
-        font-size: 16px;
-        margin-bottom: 40px;
+        font-size: 17px;
+        margin-bottom: 45px;
         font-weight: 500;
     }
     .nav-item.active { color: #ffcc00; position: relative; font-weight: bold; }
     .nav-item.active::after {
         content: "";
         position: absolute;
-        bottom: -8px;
+        bottom: -10px;
         left: 0;
         width: 100%;
         height: 3px;
         background: #ffcc00;
     }
     
-    /* 5. 板块头部样式 */
+    /* 6. 板块头部样式 - 加大图标和间距 */
     .section-header {
         display: flex;
         align-items: center;
-        margin: 30px 0 15px 0;
+        margin: 35px 0 20px 0;
     }
-    .section-icon { font-size: 26px; margin-right: 12px; }
-    .section-text { font-size: 22px; font-weight: 800; color: #ffffff; }
+    .section-icon { font-size: 28px; margin-right: 15px; }
+    .section-text { font-size: 24px; font-weight: 800; color: #ffffff; }
     .info-badge {
         background: #2d303a;
         color: #ffcc00;
-        font-size: 13px;
-        padding: 4px 14px;
+        font-size: 14px;
+        padding: 5px 16px;
         border-radius: 20px;
-        margin-left: 18px;
+        margin-left: 20px;
         border: 1px solid #3f4451;
     }
     
-    /* 6. 表格细节：模仿原版行高与边框 */
-    .custom-table { width: 100%; border-collapse: collapse; margin-top: 5px; }
+    /* 7. 表格细节：模仿原版厚重的行高 */
+    .custom-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     .custom-table th {
         color: #6b7280;
         text-align: left;
-        padding: 15px;
+        padding: 18px 15px;
         border-bottom: 2px solid #2d303a;
-        font-size: 14px;
-        font-weight: normal;
+        font-size: 15px;
     }
     .custom-table td {
-        padding: 20px 15px;
+        padding: 25px 15px;
         border-bottom: 1px solid #2d303a;
         vertical-align: middle;
     }
     
-    /* 7. 双行文字精准比例 */
-    .cell-main { font-size: 17px; font-weight: 700; color: #ffffff; display: block; line-height: 1.4; }
-    .cell-sub { font-size: 13px; color: #8c929e; display: block; margin-top: 6px; }
+    /* 8. 文字双行显示逻辑 */
+    .cell-main { font-size: 18px; font-weight: 700; color: #ffffff; display: block; line-height: 1.5; }
+    .cell-sub { font-size: 14px; color: #8c929e; display: block; margin-top: 8px; }
     .price-yellow { color: #ffcc00 !important; }
     
-    /* 8. 推荐工具卡片 - 提升质感 */
+    /* 9. 推荐工具卡片 */
     .tool-card {
         background: #242731;
-        padding: 22px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        border-left: 5px solid #ffcc00;
-        transition: transform 0.2s;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 18px;
+        border-left: 6px solid #ffcc00;
     }
-    .tool-title { font-size: 16px; font-weight: bold; color: #ffffff; }
-    .tool-desc { font-size: 14px; color: #9ca3af; margin-top: 8px; }
+    .tool-title { font-size: 17px; font-weight: bold; color: #ffffff; }
+    .tool-desc { font-size: 15px; color: #9ca3af; margin-top: 10px; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -126,7 +131,6 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # 调整后的模拟数据
     today_data = {
         "项目": ["""<span class="cell-main">Q 📄</span><span class="cell-sub">Quack AI</span>"""],
         "积分": ["""<span class="cell-main price-yellow">240</span><span class="cell-sub">3.6万份</span>"""],
@@ -135,10 +139,6 @@ def main():
     }
     df = pd.DataFrame(today_data)
     st.write(df.to_html(escape=False, index=False, classes="custom-table"), unsafe_allow_html=True)
-
-    # 空投预告
-    st.markdown('<div class="section-header"><span class="section-icon">📅</span><span class="section-text">空投预告</span></div>', unsafe_allow_html=True)
-    st.markdown('<div style="background:#242731; padding:40px; border-radius:10px; text-align:center; color:#6b7280; font-size:16px;">暂无数据</div>', unsafe_allow_html=True)
 
     # 推荐工具
     st.markdown('<div class="section-header"><span class="section-icon">⚔️</span><span class="section-text">推荐工具</span></div>', unsafe_allow_html=True)
