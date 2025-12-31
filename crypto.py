@@ -13,7 +13,7 @@ st.markdown("""
     /* 1. 强制隐藏默认组件 */
     [data-testid="stHeader"], [data-testid="stToolbar"] {display: none !important;}
     
-    /* 2. 关键修复：增加两侧留白 */
+   /* 2. 关键修复：增加两侧留白 */
     /* 限制最大宽度为 1100px 并居中，这样在大屏幕两边就会有自然的留白 */
     .main .block-container {
         padding: 3rem 1.5rem !important; 
